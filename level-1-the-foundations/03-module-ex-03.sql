@@ -1,4 +1,13 @@
 -- Example 2: Achieving 2NF by removing partial dependencies
+-- 0. Checking current db context
+SELECT current_database(), current_schema(), CURRENT_USER;
+SELECT CURRENT_SCHEMA, CURRENT_USER;
+
+-- Show current tables in the current schema using the information schema
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = current_schema();
+
 -- Drop existing tables
 DROP TABLE IF EXISTS orders_2nf_normalized;
 DROP TABLE IF EXISTS products_2nf_normalized;
@@ -21,6 +30,8 @@ INSERT INTO de_normalized_order_details (order_id, product_id, product_name, qua
 (101, 2, 'Mouse', 1),
 (102, 1, 'Laptop', 2); -- Redundancy: 'Laptop' is repeated with different orders.
 
+SELECT * from de_normalized_order_details;
+
 -- 3. Normalize to 2NF by splitting the table.
 -- We'll create a separate 'products' table for product-specific data.
 CREATE TABLE products_2nf_normalized (
@@ -41,10 +52,14 @@ INSERT INTO products_2nf_normalized (product_id, product_name) VALUES
 (1, 'Laptop'),
 (2, 'Mouse');
 
+SELECT * from products_2nf_normalized;
+
 INSERT INTO orders_2nf_normalized (order_id, product_id, quantity) VALUES
 (101, 1, 1),
 (101, 2, 1),
 (102, 1, 2);
+
+SELECT * from orders_2nf_normalized;
 
 -- 5. Query the normalized tables using a JOIN.
 SELECT

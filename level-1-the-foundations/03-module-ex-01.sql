@@ -1,5 +1,14 @@
 -- This script shows how to normalize a de-normalized table
 -- to reduce data redundancy and improve data integrity.
+-- 0. Checking current db context
+SELECT current_database(), current_schema(), CURRENT_USER;
+SELECT CURRENT_SCHEMA, CURRENT_USER;
+
+-- Show current tables in the current schema using the information schema
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = current_schema();
+
 -- Drop existing tables
 DROP TABLE IF EXISTS normalized_orders;
 DROP TABLE IF EXISTS normalized_customers;
@@ -19,6 +28,8 @@ INSERT INTO de_normalized_orders (customer_name, customer_email, order_date, pro
 ('Jane Doe', 'jane.doe@example.com', '2023-10-01', 'Laptop'),
 ('John Smith', 'john.smith@example.com', '2023-10-02', 'Mouse'),
 ('Jane Doe', 'jane.doe@example.com', '2023-10-03', 'Keyboard');
+
+SELECT * from de_normalized_orders;
 
 -- 3. Now, let's normalize this data into two tables: customers and orders.
 -- - This eliminates repeated customer data.
@@ -42,12 +53,16 @@ INSERT INTO normalized_customers (customer_name, customer_email) VALUES
 ('Jane Doe', 'jane.doe@example.com'),
 ('John Smith', 'john.smith@example.com');
 
+SELECT * from normalized_customers;
+
 -- - Then, insert orders using the customer_id as the link.
 -- (Assuming customer_id 1 is Jane Doe and 2 is John Smith)
 INSERT INTO normalized_orders (customer_id, order_date, product_name) VALUES
 (1, '2023-10-01', 'Laptop'),
 (2, '2023-10-02', 'Mouse'),
 (1, '2023-10-03', 'Keyboard');
+
+SELECT * from normalized_orders;
 
 -- 5. Query the normalized tables using a JOIN to get the full order details.
 SELECT

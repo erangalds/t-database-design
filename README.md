@@ -2,7 +2,7 @@
 
 Having a very good understanding about database design fundamental concepts is very important for all working on software development as well as data engineering fields. No mater which tech stack we use to build the application or to implement a datawarehouse or even a PowerBI Data model for analysis, knowing how OLTP datases should be designed is a very important skill. Therefore, I thought of sharing some of the things I know with you. 
 
-I am using a Postgres Dataase for the training to show all the SQL Demos. But, anyone can use which ever database they prefer for this. 
+I am using a Postgres Dataase for the training to show all the SQL Demos. But, anyone can use which ever database they prefer for this. There will be some queries which are specific to Postgres. Therefore, if you are not familiar with SQL then use a postgres db for the labs. 
 
 ## **PostgreSQL Database Design Curriculum**
 

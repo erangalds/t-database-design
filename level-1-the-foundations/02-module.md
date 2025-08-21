@@ -7,7 +7,12 @@
     - **One-to-Many:** A single record in one table can be linked to multiple records in another (e.g., a single author can write many books).
         
     - **Many-to-Many:** Multiple records in one table can be linked to multiple records in another (e.g., a book can have many authors, and an author can write many books). This requires a separate "junction" or "join" table to connect the two.
-        
+
+Let me now show you how to create tables with relationships. Look at below diagram. This is what we are going to create now. 
+
+![Tables with Relationships](./images/m2-ex-1.png)
+
+
 - **PostgreSQL Example:**
     
     - Create a `posts` table that has a foreign key referencing the `users` table.
@@ -17,6 +22,16 @@
 ```SQL
 -- This script illustrates how to create relationships between tables
 -- using Primary Keys and Foreign Keys.
+
+-- 0. Checking current db context
+SELECT current_database(), current_schema(), CURRENT_USER;
+-- SELECT CURRENT_SCHEMA, CURRENT_USER;
+
+-- Show current tables in the current schema using the information schema
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = current_schema();
+
 -- Drop existing tables to start fresh
 DROP TABLE IF EXISTS post_tags;
 DROP TABLE IF EXISTS posts;
@@ -72,6 +87,11 @@ INSERT INTO post_tags (post_id, tag_id) VALUES
 (3, 2); -- 'A Day in the Park' has tag 'personal'
   
 -- 6. Show the relationships with a JOIN query
+-- Let's look at the individual tables first.
+SELECT * from users;
+SELECT * from posts;
+SELECT * from tags;
+SELECT * from post_tags;
 -- - Find the tags for a specific post
 SELECT
 p.title,

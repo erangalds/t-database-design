@@ -1,4 +1,13 @@
 -- Example 1: Fixing a 1NF Violation by creating a junction table
+-- 0. Checking current db context
+SELECT current_database(), current_schema(), CURRENT_USER;
+SELECT CURRENT_SCHEMA, CURRENT_USER;
+
+-- Show current tables in the current schema using the information schema
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = current_schema();
+
 -- Drop existing tables to start fresh
 DROP TABLE IF EXISTS student_courses;
 DROP TABLE IF EXISTS students_1nf_violation;
@@ -18,6 +27,8 @@ INSERT INTO students_1nf_violation (student_name, courses) VALUES
 ('Alex Johnson', 'History, Literature'),
 ('Beth Williams', 'Math, Physics, Chemistry'),
 ('Charlie Davis', 'Biology');
+
+SELECT * from students_1nf_violation;
 
 -- 3. Now, let's normalize this data to 1NF.
 -- We'll create a normalized 'students' table and a separate 'courses' table.
@@ -46,6 +57,8 @@ INSERT INTO students_normalized (student_name) VALUES
 ('Beth Williams'),
 ('Charlie Davis');
 
+SELECT * from students_normalized;
+
 INSERT INTO courses (course_name) VALUES
 ('History'),
 ('Literature'),
@@ -53,6 +66,8 @@ INSERT INTO courses (course_name) VALUES
 ('Physics'),
 ('Chemistry'),
 ('Biology');
+
+SELECT * from courses;
 
 -- 6. Now, insert into the junction table to link students to their courses.
 INSERT INTO student_courses (student_id, course_id) VALUES
@@ -62,6 +77,8 @@ INSERT INTO student_courses (student_id, course_id) VALUES
 (2, 4), -- Beth takes Physics
 (2, 5), -- Beth takes Chemistry
 (3, 6); -- Charlie takes Biology
+
+SELECT * from student_courses;
 
 -- 7. Query the normalized tables to get the full data.
 SELECT

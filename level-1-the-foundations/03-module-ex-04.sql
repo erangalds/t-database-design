@@ -1,4 +1,13 @@
 -- Example 3: Achieving 3NF by removing transitive dependencies
+-- 0. Checking current db context
+SELECT current_database(), current_schema(), CURRENT_USER;
+SELECT CURRENT_SCHEMA, CURRENT_USER;
+
+-- Show current tables in the current schema using the information schema
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = current_schema();
+
 -- Drop existing tables
 DROP TABLE IF EXISTS authors_3nf_normalized;
 DROP TABLE IF EXISTS books_3nf_normalized;
@@ -20,6 +29,8 @@ INSERT INTO books_3nf_violation (book_title, author_name, author_country) VALUES
 ('The Hobbit', 'J.R.R. Tolkien', 'United Kingdom'), -- Redundancy here
 ('Dune', 'Frank Herbert', 'United States');
 
+SELECT * from books_3nf_violation;
+
 -- 3. Normalize to 3NF by splitting the table.
 -- We'll create a separate 'authors' table to remove the transitive dependency.
 CREATE TABLE authors_3nf_normalized (
@@ -39,11 +50,14 @@ INSERT INTO authors_3nf_normalized (author_name, author_country) VALUES
 ('J.R.R. Tolkien', 'United Kingdom'),
 ('Frank Herbert', 'United States');
 
+SELECT * from authors_3nf_normalized;
 -- 5. Insert into the books table using the foreign key.
 INSERT INTO books_3nf_normalized (book_title, author_id) VALUES
 ('The Lord of the Rings', 1),
 ('The Hobbit', 1),
 ('Dune', 2);
+
+SELECT * from books_3nf_normalized;
 
 -- 6. Query the normalized tables using a JOIN.
 SELECT
