@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:17.5
+    container_name: db-design-postgres
+    environment:
+      POSTGRES_DB: db_design_training
+      POSTGRES_USER: training_user
+      POSTGRES_PASSWORD: your_strong_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    name: db-design-postgres-data
