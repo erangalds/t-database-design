@@ -1,12 +1,66 @@
 # **Module 9: Real-World Case Study**
 
-- **Theory:** This is the capstone module where the team will apply everything they've learned to a practical problem. The goal is to design a complete, multi-table schema for a fictional application. This involves identifying the key entities and their relationships, then using all the concepts from previous modules—keys, relationships, constraints, and data types—to build a robust, well-designed database schema.
+- **Theory:** This is the capstone module where the you will apply everything you've learned to a practical problem. The goal is to design a complete, multi-table schema for a fictional application. This involves identifying the key entities and their relationships, then using all the concepts from previous modules—keys, relationships, constraints, and data types—to build a robust, well-designed database schema.
     
-- **PostgreSQL Example:**
+## Business Requirements
+
+### **Core Functionality**
+
+The application is designed to help users manage projects, tasks, and communications. The key features and business rules are as follows:
+
+- **Users:** Every person using the application must have a unique username and a unique email address. The system automatically records when each user account was created.
     
-    - Work with the team to brainstorm and design the full schema, including tables for `projects`, `tasks`, `users`, `comments`, and `attachments`.
+- **Projects:** A project is owned by a single user. Each project has a name and an optional description.
+    
+- **Tasks:** Tasks are the fundamental units of work.
+    
+    - Each task belongs to a specific project.
         
-    - Show how to apply all the concepts from the training to create a robust and well-designed final schema.
+    - A task can be assigned to one user, but assigning it is not mandatory.
+        
+    - Tasks must have a title.
+        
+    - Every task has a status, which can only be one of three values: **'To Do'**, **'In Progress'**, or **'Done'**.
+        
+    - Tasks can be assigned a priority level from 1 (highest) to 5 (lowest).
+        
+    - An optional due date can be set for each task.
+        
+- **Comments:** Users can add comments to specific tasks.
+    
+    - Each comment is linked to a task and to the user who wrote it.
+        
+    - The system automatically records the date and time a comment was created.
+        
+- **Attachments:** Files can be attached to tasks.
+    
+    - An attachment is associated with a specific task and the user who uploaded the file.
+        
+    - The system stores the original file name and the path where the file is stored.
+        
+
+---
+
+### **Data Relationships**
+
+The system is built on specific relationships between these components:
+
+- A user can own multiple projects, but a project can only have one owner.
+    
+- A project can have multiple tasks, but a task can only belong to one project.
+    
+- A user can be assigned to multiple tasks, but a task can only be assigned to one user.
+    
+- A task can have many comments and many attachments.
+    
+- A user can make many comments and upload many attachments.
+    
+
+This structure allows the application to track and organize all project-related activities, ensuring that every piece of information is correctly linked to its respective project, task, and user.
+
+Let me know if you would like me to draft a more detailed feature list based on these requirements or if you'd like to explore how these tables could be used for reporting purposes.
+
+    
 
 ```SQL
 -- This script provides a complete schema for a project management application,
