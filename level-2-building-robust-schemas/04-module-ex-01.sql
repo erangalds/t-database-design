@@ -1,17 +1,25 @@
 -- This script demonstrates the use of various PostgreSQL data types.
+-- 0. Checking the current context
+SELECT current_database(), current_schema(), current_user ;
+
+-- Listing the current tables in the schema
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public';
+
 -- Drop existing table
 DROP TABLE IF EXISTS products;
   
 -- 1. Create a products table with diverse data types.
 CREATE TABLE products (
-product_id SERIAL PRIMARY KEY,
-product_name VARCHAR(255) NOT NULL,
-description TEXT,
-price DECIMAL(10, 2) NOT NULL,
-in_stock BOOLEAN DEFAULT TRUE,
-added_date DATE DEFAULT CURRENT_DATE,
-specifications JSONB, -- Stores structured data
-tags TEXT[] -- Stores an array of text strings
+    product_id SERIAL PRIMARY KEY,
+    product_name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    in_stock BOOLEAN DEFAULT TRUE,
+    added_date DATE DEFAULT CURRENT_DATE,
+    specifications JSONB, -- Stores structured data
+    tags TEXT[] -- Stores an array of text strings
 );
 
 -- 2. Insert sample products with various data types.

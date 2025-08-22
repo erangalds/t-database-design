@@ -1,4 +1,12 @@
 -- This script illustrates the performance benefits of using an index.
+-- 0. Checking the current context
+SELECt current_database(), current_schema(), current_user;
+
+-- Listing the current tables in the schema
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public';
+
 -- Drop existing table and index
 DROP TABLE IF EXISTS sales;
 DROP INDEX IF EXISTS idx_sales_transaction_id;
@@ -19,6 +27,8 @@ gen_random_uuid(),
 (random() * 1000)::DECIMAL(10, 2),
 ('2023-01-01'::DATE + (random() * 365)::INTEGER)
 FROM generate_series(1, 1000000);
+
+SELECT * FROM sales;
 
 -- 3. Analyze a query on the non-indexed column 'transaction_id'.
 -- - The EXPLAIN ANALYZE command shows the query plan and execution time.

@@ -15,45 +15,55 @@
         
     - Show how `DEFAULT` can simplify data entry.
 
+
 ```SQL
 -- This script demonstrates the use of various PostgreSQL data types.
--- Drop existing table
-DROP TABLE IF EXISTS products;
+-- 0. Checking the current context
+SELECt current_database(), current_schema(), current_user;
 
--- 1. Create a products table with diverse data types.
-CREATE TABLE products (
-product_id SERIAL PRIMARY KEY,
-product_name VARCHAR(255) NOT NULL,
-description TEXT,
-price DECIMAL(10, 2) NOT NULL,
-in_stock BOOLEAN DEFAULT TRUE,
-added_date DATE DEFAULT CURRENT_DATE,
-specifications JSONB, -- Stores structured data
-tags TEXT[] -- Stores an array of text strings
+-- Listing the current tables in the schema
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public';
+
+-- This script demonstrates the use of constraints to enforce data integrity.
+
+-- Drop the table if it already exists to start with a clean slate.
+DROP TABLE IF EXISTS e_commerce_products;
+
+-- Create the table with constraints.
+CREATE TABLE e_commerce_products (
+    product_id SERIAL PRIMARY KEY,
+    -- NOT NULL and UNIQUE constraints on product_name to prevent duplicates.
+    product_name VARCHAR(255) NOT NULL UNIQUE,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    -- CHECK constraint to ensure the price is always greater than 0.
+    CONSTRAINT positive_price CHECK (price > 0),
+    -- DEFAULT constraint to automatically set 'in_stock' to TRUE.
+    in_stock BOOLEAN DEFAULT TRUE,
+    added_date DATE DEFAULT CURRENT_DATE
 );
 
--- 2. Insert sample products with various data types.
-INSERT INTO products (product_name, description, price, specifications, tags) VALUES
-('Laptop Pro', 'A powerful laptop for professionals.', 1200.50, '{"processor": "Intel i7", "ram_gb": 16, "storage_gb": 512}', ARRAY['electronics', 'computer']),
-('Wireless Mouse', 'Ergonomic and reliable mouse.', 25.00, '{"color": "black", "connection": "bluetooth"}', ARRAY['electronics', 'accessories']),
-('Coffee Mug', 'A simple white ceramic mug.', 9.99, NULL, ARRAY['home', 'kitchen']);
+-- 2. Insert sample data that respects the constraints.
+-- The first insert provides all values.
+INSERT INTO e_commerce_products (product_name, description, price)
+VALUES ('Laptop Pro', 'A powerful laptop for professionals.', 1200.50);
 
--- 3. Query the table, showing different ways to access the data.
--- - Select all products
-SELECT * FROM products;
+-- The second insert omits `in_stock` and `added_date`,
+-- which will be automatically populated by their DEFAULT values.
+INSERT INTO e_commerce_products (product_name, description, price)
+VALUES ('Wireless Mouse', 'Ergonomic and reliable mouse.', 25.00);
 
--- - Query specific fields from the JSONB column
-SELECT
-product_name,
-specifications ->> 'processor' AS processor,
-specifications ->> 'ram_gb' AS ram
-FROM products
-WHERE specifications IS NOT NULL;
+-- 3. The following statements will fail, demonstrating how constraints prevent invalid data.
+-- This insert fails due to the UNIQUE constraint on product_name.
+-- INSERT INTO e_commerce_products (product_name, description, price)
+-- VALUES ('Laptop Pro', 'Another laptop.', 1500.00);
 
--- - Find products that have a specific tag using the array operator
-SELECT
-product_name,
-tags
-FROM products
-WHERE 'computer' = ANY(tags);
+-- This insert fails due to the CHECK constraint on price.
+-- INSERT INTO e_commerce_products (product_name, description, price)
+-- VALUES ('Broken Widget', 'A useless item.', -5.00);
+
+-- 4. Query the table to see the inserted data, including the default values.
+SELECT * FROM e_commerce_products;
 ```

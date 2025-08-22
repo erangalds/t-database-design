@@ -1,6 +1,5 @@
 # Module 6: Indexing & Performance
 
-
 - **Theory:** An **index** is a data structure that helps the database find rows more quickly. Think of it as the index in the back of a textbook: instead of reading the whole book to find a topic, you can go to the index, find the page number, and jump directly to the right page. Indexes are crucial for improving the performance of `SELECT`queries, especially on large tables. However, they also add overhead for `INSERT`, `UPDATE`, and `DELETE` operations, as the index needs to be updated.
     
 - **PostgreSQL Example:**
