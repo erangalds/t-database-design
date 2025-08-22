@@ -52,3 +52,47 @@ This final level covers complex, real-world scenarios and advanced PostgreSQL fe
 
 - **Module 9: Real-World Case Study** 🚀
   - Apply all learned concepts to design a complete, multi-table schema for a fictional project management application. This capstone module ties everything together, demonstrating how to build a robust and well-designed database from scratch.
+
+
+## Envionment Setup
+
+As I mentioned above, I am using POSTGRES Database for this lab. Yes, I know that certain topics which was covered are specific to POSTGRES as well. But most of the important concepts are common to any database software. 
+
+Anyway, below is the docker configuration. 
+
+```yaml
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:17.5
+    container_name: db-design-postgres
+    environment:
+      POSTGRES_DB: db_design_training
+      POSTGRES_USER: training_user
+      POSTGRES_PASSWORD: training_user_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    name: db-design-postgres-data
+```
+
+I used the `POSTGRES` plugin in VSCODE to run all the code, which is very convenient. But just to get the Table screenshots, I used dBeaver community edition software. I assume you have docker desktop installed and configured on your machine. If that's installed then, just enter below command to start the environment. 
+
+```bash
+# Build and Start the Environment
+docker compose up -d
+# Stop the environment
+# docker compose stop
+# Start the environment again
+# docker compose start
+# Delete and remove the environment including the persisted data
+# docker compose down -v
+```
+
+Enjoy!!! 😄
